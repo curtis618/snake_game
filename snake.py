@@ -103,27 +103,6 @@ class SnakeGame:
         # 返回當前狀態、回報、遊戲是否結束
         return self.get_state(), reward, self.game_over, self.score
 
-    def get_state(self):
-        """將遊戲狀態編碼為數組，用於輸入 DQN"""
-        head = self.head
-
-        # 定義相對位置的危險狀態
-        danger_straight = self.is_collision(head)
-        danger_right = self.is_collision(Point(head.x + BLOCK_SIZE, head.y))
-        danger_left = self.is_collision(Point(head.x - BLOCK_SIZE, head.y))
-
-        # 食物方向
-        food_left = self.food.x < head.x
-        food_right = self.food.x > head.x
-        food_up = self.food.y < head.y
-        food_down = self.food.y > head.y
-
-        state = [
-            danger_straight, danger_right, danger_left,
-            food_left, food_right, food_up, food_down
-        ]
-        return np.array(state, dtype=int)
-
     def is_collision(self, pt=None):
         """檢查是否發生碰撞"""
         if pt is None:
